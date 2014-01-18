@@ -27,26 +27,27 @@ class DefaultController extends Controller {
     }
 
     public function weixinAction(Request $request){
-	// 微信一般接口
-    	if($request->server->get('REQUEST_METHOD') == 'POST'){
-	    	$post_data = file_get_contents('php://input'); // 微信服务器POST的xml数据
-		$d = simplexml_load_string($post_data, 'SimpleXMLElement', LIBXML_NOCDATA);
-	    	$data = array(
-	    		'toUser' => $d->fromUser,
-	    		'fromUser' => $d->toUser,
-	    		'time' => time(),
-	    		'type' => 'text',
-	    		'content' => $d->Content,
-    		);
-	    	return $this->render('LiHelloBundle:Default:text.xml.twig', $data);
-    	}else{ // 微信验证
-		if ($this->checkSignature($request)) {
-			echo $request->query->get('echostr');
-		}else{
-			echo 'opps...';
-		}
+    	// 检查是否是微信的请求
+	if (!$this->checkSignature($request)) {
+		echo 'opps...';
+		exit();
+	}
+	// 微信验证请求
+    	if($request->server->get('REQUEST_METHOD') == 'GET'){
+		echo $request->query->get('echostr');
 		exit();
     	}
+    	// 正常请求
+    	$post_data = file_get_contents('php://input'); // 微信服务器POST的xml数据
+	$d = simplexml_load_string($post_data, 'SimpleXMLElement', LIBXML_NOCDATA);
+    	$data = array(
+    		'toUser' => $d->FromUserName,
+    		'fromUser' => $d->ToUserName,
+    		'time' => time(),
+    		'type' => 'text',
+    		'content' => $d->Content,
+		);
+    	return $this->render('LiHelloBundle:Default:text.xml.twig', $data);
     }
 
     private function checkSignature($request) {
@@ -59,7 +60,7 @@ class DefaultController extends Controller {
 	$tmpStr = implode( $tmpArr );
 	$tmpStr = sha1( $tmpStr );
 	
-	if( $tmpStr == $signature ){
+	if( strtolower($tmpStr) == strtolower($signature)){
 		return true;
 	}else{
 		return false;
