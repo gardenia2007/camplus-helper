@@ -1,0 +1,7 @@
+parameters:
+#    li_hello.example.class: Li\HelloBundle\Example
+
+services:
+#    li_hello.example:
+#        class: %li_hello.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

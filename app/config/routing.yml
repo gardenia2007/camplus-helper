@@ -1,0 +1,4 @@
+li_hello:
+    resource: "@LiHelloBundle/Resources/config/routing.yml"
+    prefix:   /
+

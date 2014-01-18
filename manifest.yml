@@ -1,0 +1,16 @@
+---
+applications:
+  .:
+    name: symfony
+    framework:
+      name: standalone
+      info:
+        mem: 64M
+        description: Standalone Application
+        exec: 
+    runtime: php
+    command: 
+    infra: ap-aws
+    url: 
+    mem: 128M
+    instances: 1

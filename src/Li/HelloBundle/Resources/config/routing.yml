@@ -1,0 +1,11 @@
+li_hello_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: LiHelloBundle:Default:index }
+
+li_test_page:
+    pattern: /test
+    defaults: { _controller: LiHelloBundle:Default:test }
+
+li_weixin:
+    pattern: /weixin
+    defaults: { _controller: LiHelloBundle:Default:weixin }
